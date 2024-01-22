@@ -18,7 +18,9 @@ namespace GainsightWpfApp
     internal class EngagementRenderContainerProvider : IRenderContainerProvider
     {
         private bool _browserInitialized;
+        private bool _javascripBindingRegistered;
         private string _hostName;
+        private object _javascriptCallback;
         private string _webControlDataDirectoryPath;
 
         private string _htmlContent = null;
@@ -51,24 +53,31 @@ namespace GainsightWpfApp
             Browser.DefaultBackgroundColor = System.Drawing.Color.Transparent;
             Browser.CoreWebView2InitializationCompleted += OnCoreWebView2InitializationCompleted;
             Browser.NavigationCompleted += OnNavigationCompleted;
+            Browser.Loaded += OnBrowserLoaded;
             Browser.Unloaded += OnBrowserUnloaded;
 
             return EngagementControl;
         }
 
         /// <inheritdoc cref="IRenderContainerProvider.RegisterJavaScriptBinding" />
-        public async void RegisterJavaScriptBinding(string callbackName, object javascriptCallback)
+        public void RegisterJavaScriptBinding(string callbackName, object javascriptCallback)
         {
+            if (_javascripBindingRegistered)
+            {
+                return;
+            }
+
             _hostName = callbackName;
+            _javascriptCallback = javascriptCallback;
 
-            //// TODO: Create a custom environment to specify the Data directory for the browser
-            ////var environment = await CreateWebViewEnvironmentAsync();
-            ////await Browser?.EnsureCoreWebView2Async(environment);
-            await Browser?.EnsureCoreWebView2Async();
+            if (_browserInitialized)
+            {
+                Browser.CoreWebView2.AddHostObjectToScript(
+                    _hostName,
+                    new EngagementJavaScriptHost(_javascriptCallback, EngagementControl));
 
-            Browser?.CoreWebView2?.AddHostObjectToScript(
-                _hostName,
-                new EngagementJavaScriptHost(javascriptCallback, EngagementControl));
+                _javascripBindingRegistered = true;
+            }
         }
 
         /// <inheritdoc cref="IRenderContainerProvider.ExecuteJavaScript" />
@@ -120,11 +129,10 @@ namespace GainsightWpfApp
             _browserInitialized = true;
             DisableBrowserSettings();
             LoadHtml();
+            RegisterJavaScriptBinding(_hostName, _javascriptCallback);
 
-            ////if (_showDevTools)
-            ////{
-            ////    Browser?.CoreWebView2?.OpenDevToolsWindow();
-            ////}
+            // TODO: Uncomment to show the MS Edge DevTools
+            // Browser?.CoreWebView2?.OpenDevToolsWindow();
         }
 
         private void DisableBrowserSettings()
@@ -168,6 +176,15 @@ namespace GainsightWpfApp
 
                 OnPageLoaded?.Invoke(this);
             }
+        }
+
+        private void OnBrowserLoaded(object sender, RoutedEventArgs e)
+        {
+            //// TODO: Create a custom environment to specify the Data directory for the browser
+            ////var environment = await CreateWebViewEnvironmentAsync();
+            ////Browser?.EnsureCoreWebView2Async(environment);
+
+            Browser.EnsureCoreWebView2Async();
         }
 
         private void OnBrowserUnloaded(object sender, RoutedEventArgs e)
