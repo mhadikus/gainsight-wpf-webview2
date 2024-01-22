@@ -14,8 +14,9 @@ Required packages
 Open `GainsightWpfApp.sln` with Visual Studio 2022
 - Set your product key and your user ID in `GainsightConstants.cs`
 - `WebView2WrapperControl` is a user control that wraps the WPF [WebView2 HWndHost](https://learn.microsoft.com/en-us/dotnet/api/microsoft.web.webview2.wpf.webview2)
+- `MainWindow.ReferenceControl` is a `Grid` that is used as a reference to position the web control
 - Build and run the application
   - The _Navigate_ button shows how to navigate to a web page using an instance of `WebView2WrapperControl`
   - The _Start Engagement_ button shows how to display Gainsight PX engagement with the `WebView2WrapperControl`
 
-
+![img](gainsight-wpf-webview2.gif)
