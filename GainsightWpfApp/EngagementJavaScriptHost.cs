@@ -134,6 +134,14 @@ namespace GainsightWpfApp
                 Debug.WriteLine($"{nameof(GainsightPX.Gainsight)}: Received {nameof(cefQuery)} event: {message} fixedWidth: {width} fixedHeight: {height}");
 
                 ////engagementControl.OnEngagementAvailable(width, height);
+
+                // TODO: Refresh the Gainsight PX browser window.
+                // TODO: This is a work-around to ensure engagement is displayed on the web control.
+                if (engagementControl.Parent is System.Windows.Window browserWindow)
+                {
+                    browserWindow.Hide();
+                    browserWindow.Show();
+                }
             }
             catch (Exception e)
             {
