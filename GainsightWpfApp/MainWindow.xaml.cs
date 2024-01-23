@@ -51,6 +51,8 @@ namespace GainsightWpfApp
 
             var provider = new EngagementRenderContainerProvider();
             GainsightPX.WPF.EngagementHandler.AttachEngagementsHandler(Gainsight.Client, provider);
+            
+            // TODO: Uncomment to unset reference control to fix an issue with the browser window not moving with the main window
             Gainsight.Client.SetEngagementReference(this.ReferenceControl);
 
             Gainsight.Client.Track(
