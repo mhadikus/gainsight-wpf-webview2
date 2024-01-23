@@ -18,7 +18,7 @@ namespace GainsightWpfApp
     internal class EngagementRenderContainerProvider : IRenderContainerProvider
     {
         private bool _browserInitialized;
-        private bool _javascripBindingRegistered;
+        private bool _javascriptBindingRegistered;
         private string _hostName;
         private object _javascriptCallback;
         private string _webControlDataDirectoryPath;
@@ -62,7 +62,7 @@ namespace GainsightWpfApp
         /// <inheritdoc cref="IRenderContainerProvider.RegisterJavaScriptBinding" />
         public void RegisterJavaScriptBinding(string callbackName, object javascriptCallback)
         {
-            if (_javascripBindingRegistered)
+            if (_javascriptBindingRegistered)
             {
                 return;
             }
@@ -76,7 +76,7 @@ namespace GainsightWpfApp
                     _hostName,
                     new EngagementJavaScriptHost(_javascriptCallback, EngagementControl));
 
-                _javascripBindingRegistered = true;
+                _javascriptBindingRegistered = true;
             }
         }
 
