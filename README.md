@@ -20,3 +20,10 @@ Open `GainsightWpfApp.sln` with Visual Studio 2022
   - The _Start Engagement_ button shows how to display Gainsight PX engagement with the `WebView2WrapperControl`
 
 ![img](gainsight-wpf-webview2.gif)
+
+# Known Issues
+
+The Gainsight PX browser window does not move with the main application window. It also does not minimize or maximize with the main window.<br/>
+Workaround: Create a listener to reposition the browser window whenever the main window is moved, resized, minimized or  maximized.<br/>
+
+![img](open-issue-not-moving-with-main-window.gif)
