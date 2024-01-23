@@ -110,6 +110,13 @@ namespace GainsightWpfApp
             {
                 InvokeEngagementHandler(message, args, jsonEventArgs);
             }
+
+            if (message == EngagementDrawnEventName || message == EngagementResizeEventName)
+            {
+                // TODO: Work-around to ensure WebView2 control is visible
+                // TODO: https://github.com/MicrosoftEdge/WebView2Feedback/issues/1094
+                engagementControl.WebView2Browser.UpdateWindowPos();
+            }
         }
 
         private void InvokeEngagementHandler(string message, object args, IDictionary<string, object> jsonEventArgs)
@@ -134,14 +141,6 @@ namespace GainsightWpfApp
                 Debug.WriteLine($"{nameof(GainsightPX.Gainsight)}: Received {nameof(cefQuery)} event: {message} fixedWidth: {width} fixedHeight: {height}");
 
                 ////engagementControl.OnEngagementAvailable(width, height);
-
-                // TODO: Refresh the Gainsight PX browser window.
-                // TODO: This is a work-around to ensure engagement is displayed on the web control.
-                if (engagementControl.Parent is System.Windows.Window browserWindow)
-                {
-                    browserWindow.Hide();
-                    browserWindow.Show();
-                }
             }
             catch (Exception e)
             {
