@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Media;
 using GainsightPX.WPF;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
@@ -43,7 +43,7 @@ namespace GainsightWpfApp
         }
 
         /// <inheritdoc cref="IRenderContainerProvider.GetWebControl" />
-        public Control GetWebControl()
+        public Visual GetWebControl()
         {
             // TODO: If there is any active engagement, we should either dismiss it before showing a new one
             // TODO: or ignore the new incoming engagement

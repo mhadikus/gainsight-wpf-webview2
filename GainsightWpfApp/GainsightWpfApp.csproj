@@ -19,10 +19,10 @@
 
   <ItemGroup>
     <Reference Include="GainsightPX">
-      <HintPath>GainsightPX.1.3.6\GainsightPX.WPF\net6.0-windows\GainsightPX.dll</HintPath>
+      <HintPath>GainsightPX\GainsightPX\GainsightPX.dll</HintPath>
     </Reference>
     <Reference Include="GainsightPX.WPF">
-      <HintPath>GainsightPX.1.3.6\GainsightPX\net6.0\GainsightPX.WPF.dll</HintPath>
+      <HintPath>GainsightPX\GainsightPX.WPF\GainsightPX.WPF.dll</HintPath>
     </Reference>
   </ItemGroup>
 

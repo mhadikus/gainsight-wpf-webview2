@@ -6,10 +6,10 @@
 Required packages
 - Microsoft.WebWebView2 - https://www.nuget.org/packages/Microsoft.Web.WebView2/1.0.2210.55
 - Newtonsoft.Json - https://www.nuget.org/packages/Newtonsoft.Json/13.0.1
-- Gainsight PX SDK 1.3.6 (or later version)
+- Gainsight PX SDK 1.3.8 (or later version)
   - Download the SDK from https://support.gainsight.com/PX/API_for_Developers/SDKs/Gainsight_PX_C_SDK
-  - Copy `GainsightPX.dll` to `GainsightWpfApp\GainsightPX.1.3.6\GainsightPX\net6.0` directory
-  - Copy `GainsightPX.WPF` to `GainsightWpfApp\GainsightPX.1.3.6\GainsightPX.WPF\net6.0-windows` directory
+  - Copy `GainsightPX.dll` to `GainsightWpfApp\GainsightPX\GainsightPX` directory
+  - Copy `GainsightPX.WPF.dll` to `GainsightWpfApp\GainsightPX\GainsightPX.WPF` directory
 
 Open `GainsightWpfApp.sln` with Visual Studio 2022 or Visual Studio Code
 - Set your product key and your user ID in `GainsightConstants.cs`
@@ -21,11 +21,3 @@ Open `GainsightWpfApp.sln` with Visual Studio 2022 or Visual Studio Code
   - The _Start Engagement_ button shows how to display Gainsight PX engagement with the `WebView2WrapperControl`
 
 ![img](gainsight-wpf-webview2.gif)
-
-# Known Issues
-
-When you set a reference control via `Gainsight.Client.SetEngagementReference()`, the Gainsight PX browser window does not move with the main application window.<br/>
-It also does not minimize or maximize with the main window.<br/>
-_Workaround:_ Create a listener to reposition the browser window whenever the main window is moved, resized, minimized or  maximized.<br/>
-
-![img](open-issue-not-moving-with-main-window.gif)
