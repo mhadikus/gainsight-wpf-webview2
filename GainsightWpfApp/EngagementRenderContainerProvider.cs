@@ -26,11 +26,9 @@ namespace GainsightWpfApp
         private string _htmlContent = null;
         private string _htmlPath = null;
 
-        public WebView2WrapperControl EngagementControl { get; private set; }
+        public WebView2 EngagementControl { get; private set; }
 
-        public WebView2 Browser => EngagementControl?.WebView2Browser;
-
-        private uint? BrowserProcessId => Browser?.CoreWebView2?.BrowserProcessId;
+        private uint? BrowserProcessId => EngagementControl?.CoreWebView2?.BrowserProcessId;
 
         private string WebControlDataDirectoryPath => _webControlDataDirectoryPath
             ?? (_webControlDataDirectoryPath = CreateWebControlDataDirectoryPath());
@@ -48,13 +46,15 @@ namespace GainsightWpfApp
             // TODO: If there is any active engagement, we should either dismiss it before showing a new one
             // TODO: or ignore the new incoming engagement
 
-            EngagementControl = new WebView2WrapperControl();
+            EngagementControl = new WebView2
+            {
+                DefaultBackgroundColor = System.Drawing.Color.Transparent
+            };
 
-            Browser.DefaultBackgroundColor = System.Drawing.Color.Transparent;
-            Browser.CoreWebView2InitializationCompleted += OnCoreWebView2InitializationCompleted;
-            Browser.NavigationCompleted += OnNavigationCompleted;
-            Browser.Loaded += OnBrowserLoaded;
-            Browser.Unloaded += OnBrowserUnloaded;
+            EngagementControl.CoreWebView2InitializationCompleted += OnCoreWebView2InitializationCompleted;
+            EngagementControl.NavigationCompleted += OnNavigationCompleted;
+            EngagementControl.Loaded += OnBrowserLoaded;
+            EngagementControl.Unloaded += OnBrowserUnloaded;
 
             return EngagementControl;
         }
@@ -72,7 +72,7 @@ namespace GainsightWpfApp
 
             if (_browserInitialized)
             {
-                Browser.CoreWebView2.AddHostObjectToScript(
+                EngagementControl.CoreWebView2.AddHostObjectToScript(
                     _hostName,
                     new EngagementJavaScriptHost(_javascriptCallback, EngagementControl));
 
@@ -83,7 +83,7 @@ namespace GainsightWpfApp
         /// <inheritdoc cref="IRenderContainerProvider.ExecuteJavaScript" />
         public void ExecuteJavaScript(string surveyScript)
         {
-            Browser?.CoreWebView2?.ExecuteScriptAsync(surveyScript);
+            EngagementControl?.CoreWebView2?.ExecuteScriptAsync(surveyScript);
         }
 
         /// <inheritdoc cref="IRenderContainerProvider.LoadHtmlContent" />
@@ -110,7 +110,7 @@ namespace GainsightWpfApp
 
         private void LoadHtml()
         {
-            if (_htmlContent != null && _htmlPath != null && Browser.CoreWebView2 != null && _browserInitialized)
+            if (_htmlContent != null && _htmlPath != null && EngagementControl.CoreWebView2 != null && _browserInitialized)
             {
                 _htmlContent = ConvertResultsToString(_hostName, _htmlContent);
 
@@ -118,9 +118,9 @@ namespace GainsightWpfApp
                 // Without that, we won't have permissions for cookies and it will fail
                 // Based on: https://github.com/MicrosoftEdge/WebView2Feedback/issues/219
                 // Using: https://learn.microsoft.com/en-us/microsoft-edge/webview2/how-to/webresourcerequested?tabs=dotnet
-                Browser.CoreWebView2.AddWebResourceRequestedFilter(_htmlPath, CoreWebView2WebResourceContext.All);
-                Browser.CoreWebView2.WebResourceRequested += OnCoreWebView2WebResourceRequested;
-                Browser.CoreWebView2.Navigate(_htmlPath);
+                EngagementControl.CoreWebView2.AddWebResourceRequestedFilter(_htmlPath, CoreWebView2WebResourceContext.All);
+                EngagementControl.CoreWebView2.WebResourceRequested += OnCoreWebView2WebResourceRequested;
+                EngagementControl.CoreWebView2.Navigate(_htmlPath);
             }
         }
 
@@ -132,12 +132,12 @@ namespace GainsightWpfApp
             RegisterJavaScriptBinding(_hostName, _javascriptCallback);
 
             // TODO: Uncomment to show the MS Edge DevTools
-            // Browser?.CoreWebView2?.OpenDevToolsWindow();
+            // EngagementControl?.CoreWebView2?.OpenDevToolsWindow();
         }
 
         private void DisableBrowserSettings()
         {
-            var settings = Browser?.CoreWebView2?.Settings;
+            var settings = EngagementControl?.CoreWebView2?.Settings;
             if (settings != null)
             {
                 // Disable keyboard shortcuts
@@ -161,7 +161,7 @@ namespace GainsightWpfApp
                 args.Response = response;
             }
 
-            Browser.CoreWebView2.RemoveWebResourceRequestedFilter(_htmlPath, CoreWebView2WebResourceContext.All);
+            EngagementControl.CoreWebView2.RemoveWebResourceRequestedFilter(_htmlPath, CoreWebView2WebResourceContext.All);
         }
 
         private void OnNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs args)
@@ -182,9 +182,9 @@ namespace GainsightWpfApp
         {
             //// TODO: Create a custom environment to specify the Data directory for the browser
             ////var environment = await CreateWebViewEnvironmentAsync();
-            ////Browser?.EnsureCoreWebView2Async(environment);
+            ////EngagementControl?.EnsureCoreWebView2Async(environment);
 
-            Browser.EnsureCoreWebView2Async();
+            EngagementControl.EnsureCoreWebView2Async();
         }
 
         private void OnBrowserUnloaded(object sender, RoutedEventArgs e)

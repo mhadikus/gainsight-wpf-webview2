@@ -102,8 +102,8 @@ namespace GainsightWpfApp
 
         private async void NavigateAsync(string url)
         {
-            await TestWebView2Control.WebView2Browser.EnsureCoreWebView2Async();
-            TestWebView2Control.WebView2Browser.CoreWebView2.Navigate(url);
+            await TestWebView2Control.EnsureCoreWebView2Async();
+            TestWebView2Control.CoreWebView2.Navigate(url);
         }
     }
 }

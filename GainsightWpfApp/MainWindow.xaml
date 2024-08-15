@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GainsightWpfApp"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200">
     <Grid x:Name="Grid" Margin="5" Background="LightGreen">
@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
         <Grid x:Name="ReferenceControl" Grid.Row="0" Grid.Column="0" Height="350" Width="680" Background="LightBlue"/>
         <Button x:Name="EngagementButton" Grid.Row="0" Grid.Column="1" Width="150" Height="50" Click="EngagementButton_Click">Start Engagement</Button>
-        <local:WebView2WrapperControl x:Name="TestWebView2Control" Grid.Row="1" Grid.Column="0"/>
+        <wv2:WebView2 x:Name="TestWebView2Control" Grid.Row="1" Grid.Column="0"/>
         <Button x:Name="GoButton" Grid.Row="1" Grid.Column="1" Width="150" Height="50" Click="GoButton_Click">Navigate</Button>
     </Grid>
 </Window>

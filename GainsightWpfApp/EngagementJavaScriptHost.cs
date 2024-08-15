@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Microsoft.Web.WebView2.Wpf;
 using Newtonsoft.Json;
 
 namespace GainsightWpfApp
@@ -51,9 +52,9 @@ namespace GainsightWpfApp
 
         private readonly MethodInfo cefQueryMethod;
 
-        private readonly WebView2WrapperControl engagementControl;
+        private readonly WebView2 engagementControl;
 
-        public EngagementJavaScriptHost(object handler, WebView2WrapperControl control)
+        public EngagementJavaScriptHost(object handler, WebView2 control)
         {
             this.engagementHandler = handler;
             var objType = this.engagementHandler.GetType();
@@ -115,7 +116,7 @@ namespace GainsightWpfApp
             {
                 // TODO: Work-around to ensure WebView2 control is visible
                 // TODO: https://github.com/MicrosoftEdge/WebView2Feedback/issues/1094
-                engagementControl.WebView2Browser.UpdateWindowPos();
+                engagementControl.UpdateWindowPos();
             }
         }
 
